@@ -17,10 +17,7 @@ const Button = ({
   return (
     <TouchableOpacity
       disabled={disabled}
-      style={[
-        styles.button,
-        { backgroundColor: disabled ? "#cccccc" : backgroundColor },
-      ]} // Apply backgroundColor
+      style={styles.button}
       onPress={onPress}
     >
       {title ? <Text style={styles.buttonText}>{title}</Text> : children}

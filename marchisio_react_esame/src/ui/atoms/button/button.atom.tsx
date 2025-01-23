@@ -1,50 +1,30 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const Button = ({
-  children,
-  disabled,
-  onPress,
-  title,
-  backgroundColor = "#112341",
-}: {
-  children?: ReactElement;
-  disabled?: boolean;
+type ButtonProps = {
+  title: string;
   onPress: () => void;
-  title?: string;
-  backgroundColor?: string;
-}) => {
+  style?: object;
+};
+
+const Button = ({ title, onPress, style }: ButtonProps) => {
   return (
-    <TouchableOpacity
-      disabled={disabled}
-      style={[
-        styles.button,
-        { backgroundColor: disabled ? "#cccccc" : backgroundColor },
-      ]} // Apply backgroundColor
-      onPress={onPress}
-    >
-      {title ? <Text style={styles.buttonText}>{title}</Text> : children}
+    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    backgroundColor: "#6200ee",
+    padding: 10,
+    borderRadius: 5,
     alignItems: "center",
-    justifyContent: "center",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
   },
-  buttonText: {
+  text: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold",
   },
 });
 

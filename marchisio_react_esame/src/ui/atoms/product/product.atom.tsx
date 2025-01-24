@@ -9,8 +9,8 @@ type ProductProps = {
   price: number;
   description: string;
   image: string;
-  isFavorite: boolean; // Aggiunto per mostrare lo stato preferito
-  onToggleFavorite: () => void; // Callback per gestire il toggle
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 };
 
 const Product = ({
@@ -39,7 +39,10 @@ const Product = ({
         </TouchableOpacity>
       </View>
       <Text style={styles.price}>${price.toFixed(2)}</Text>
-      <Text style={styles.description}>{description}</Text>
+      {/* Taglia la descrizione a un massimo di 2 righe */}
+      <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
+        {description}
+      </Text>
     </View>
   );
 };

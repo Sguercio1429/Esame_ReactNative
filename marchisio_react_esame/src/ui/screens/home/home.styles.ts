@@ -4,13 +4,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: "#fff", // Optional
+    backgroundColor: "#fff",
   },
-  productItem: {
-    flex: 1, // Each product will equally share the space
-    margin: 5, // Space between items
-    maxWidth: "23%", // Prevent items from stretching too much
-    alignItems: "center", // Center product content
+  categoryContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap", // Permette di andare a capo se non c'è abbastanza spazio
+    marginBottom: 10,
+  },
+  categoryButton: {
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    margin: 5,
+    borderRadius: 5,
+  },
+  selectedCategory: {
+    backgroundColor: "#3579f6",
+  },
+  categoryButtonText: {
+    fontSize: 14,
+    color: "#000",
+  },
+  selectedCategoryText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap", // Permette di andare a capo
+    marginBottom: 10,
+  },
+  ratingButton: {
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    margin: 5,
+    borderRadius: 5,
+  },
+  selectedRating: {
+    backgroundColor: "#3579f6",
+  },
+  ratingButtonText: {
+    fontSize: 14,
+    color: "#000",
+  },
+  selectedRatingText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 

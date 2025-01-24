@@ -2,21 +2,21 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginBottom: 16,
+    padding: 10,
+    marginBottom: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
+    shadowRadius: 4,
     elevation: 3,
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 150,
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   header: {
     flexDirection: "row",
@@ -24,23 +24,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     flex: 1,
-    marginRight: 8,
+    marginRight: 10,
   },
   bookmarkButton: {
-    padding: 8,
+    padding: 5,
   },
   price: {
-    fontSize: 16,
-    color: "#6200ee",
-    marginTop: 8,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#3579f6",
+    marginVertical: 5,
   },
   description: {
-    fontSize: 14,
-    color: "#555",
-    marginTop: 4,
+    fontSize: 12,
+    color: "#6d7075",
   },
 });
 

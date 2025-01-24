@@ -6,11 +6,17 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MainParamList, Screen } from "../../navigation/types";
 import Product from "../../atoms/product/product.atom";
 import { useProducts } from "../hook/useProduct.facade";
 import styles from "./home.styles";
 
-const HomeScreen = () => {
+interface Props {
+  navigation: NativeStackNavigationProp<MainParamList, Screen.Home>;
+}
+
+const HomeScreen = ({ navigation }: Props) => {
   const {
     products,
     favorites,
@@ -114,6 +120,12 @@ const HomeScreen = () => {
               image={item.image}
               isFavorite={favorites.some((fav) => fav.id === item.id)}
               onToggleFavorite={() => toggleFavorite(item)}
+              onPressImage={() =>
+                navigation.navigate(Screen.Detail, {
+                  id: item.id,
+                  productId: products.map((p) => p.id),
+                })
+              }
             />
           )}
           numColumns={4} // Visualizza un massimo di 4 prodotti per riga

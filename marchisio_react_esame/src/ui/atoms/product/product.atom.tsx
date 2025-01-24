@@ -11,6 +11,7 @@ type ProductProps = {
   image: string;
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  onPressImage: () => void;
 };
 
 const Product = ({
@@ -21,10 +22,14 @@ const Product = ({
   image,
   isFavorite,
   onToggleFavorite,
+  onPressImage,
 }: ProductProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      {/* Immagine cliccabile */}
+      <TouchableOpacity onPress={onPressImage}>
+        <Image source={{ uri: image }} style={styles.image} />
+      </TouchableOpacity>
       <View style={styles.header}>
         <Text style={styles.title}>{title}</Text>
         <TouchableOpacity
@@ -39,7 +44,7 @@ const Product = ({
         </TouchableOpacity>
       </View>
       <Text style={styles.price}>${price.toFixed(2)}</Text>
-      {/* Taglia la descrizione a un massimo di 2 righe */}
+      {/* Descrizione con limite di 2 righe */}
       <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
         {description}
       </Text>

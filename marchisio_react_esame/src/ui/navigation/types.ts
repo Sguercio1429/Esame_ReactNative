@@ -16,6 +16,7 @@ export type TabParams = {
 
 export type MainParamList = {
   TabNavigator: undefined;
+  [Screen.Home]: undefined;
   [Screen.Detail]: {
     id: number;
     productId: number[];

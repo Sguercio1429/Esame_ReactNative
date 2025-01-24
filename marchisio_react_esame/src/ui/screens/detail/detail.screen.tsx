@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { View, FlatList, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../../atoms/button/button.atom";
@@ -25,7 +25,9 @@ interface Props {
 const DetailScreen = ({ navigation, route }: Props) => {
   const { top, bottom } = useSafeAreaInsets();
   const { id, productId } = route.params;
-  const [products, setProducts] = useState<ProductDetail[] | null>(null);
+  const [product, setProduct] = useState<ProductDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const currentIndex = useMemo(() => productId.indexOf(id), [id, productId]);
 
@@ -41,42 +43,62 @@ const DetailScreen = ({ navigation, route }: Props) => {
   // ** CALLBACKS ** //
   const handleBack = useCallback(() => {
     const previousId = productId[currentIndex - 1];
-    if (!previousId) {
-      return;
-    }
+    if (!previousId) return;
     navigation.setParams({ id: previousId });
   }, [currentIndex, productId, navigation]);
 
   const handleNext = useCallback(() => {
     const nextId = productId[currentIndex + 1];
-    if (!nextId) {
-      return;
-    }
+    if (!nextId) return;
     navigation.setParams({ id: nextId });
   }, [currentIndex, productId, navigation]);
 
+  // ** FETCH PRODUCT DETAILS ** //
   useEffect(() => {
-    // Recupera dettagli del prodotto simulato da un'API
-    fetch("https://fakestoreapi.com/products" + id)
-      .then((res) => res.json())
-      .then((data) => setProducts([data]));
+    setIsLoading(true);
+    setError(null);
+
+    // Correggere l'URL con la barra `/` prima dell'ID
+    fetch(`https://fakestoreapi.com/products/${id}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch product details");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setProduct(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message || "An error occurred");
+        setIsLoading(false);
+      });
   }, [id]);
 
-  const renderProduct = useCallback(({ item }: { item: ProductDetail }) => {
+  // ** UI RENDERING ** //
+  if (isLoading) {
     return (
-      <Product
-        title={item.title}
-        price={item.price}
-        description={item.description}
-        image={item.image}
-      />
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#6200ee" />
+      </View>
     );
-  }, []);
+  }
 
-  if (!products) {
+  if (error) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#6200ee" />
+        <Text style={styles.errorText}>{error}</Text>
+        <Button title="Go Back" onPress={navigation.goBack} />
+      </View>
+    );
+  }
+
+  if (!product) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.errorText}>Product not found</Text>
+        <Button title="Go Back" onPress={navigation.goBack} />
       </View>
     );
   }
@@ -99,12 +121,16 @@ const DetailScreen = ({ navigation, route }: Props) => {
         />
       </View>
 
-      {/* Lista Prodotti */}
-      <FlatList
-        data={products}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderProduct}
-        showsVerticalScrollIndicator={false}
+      {/* Dettagli Prodotto */}
+      <Product
+        id={product.id}
+        title={product.title}
+        price={product.price}
+        description={product.description}
+        image={product.image}
+        isFavorite={false} // Aggiorna questa logica secondo le tue necessità
+        onToggleFavorite={() => {}}
+        onPressImage={() => {}}
       />
 
       {/* Bottone per tornare indietro */}

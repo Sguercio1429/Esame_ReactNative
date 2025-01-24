@@ -10,7 +10,7 @@ export type TabParams = {
     hasFavoritesUpdated: boolean;
   };
   [Screen.Favorites]: {
-    hasFavoritesUpdated: boolean;
+    hasFavoritesUpdatAed: boolean;
   };
 };
 
@@ -18,6 +18,6 @@ export type MainParamList = {
   TabNavigator: undefined;
   [Screen.Detail]: {
     id: number;
-    idsArray: number[];
+    productId: number[];
   };
 };

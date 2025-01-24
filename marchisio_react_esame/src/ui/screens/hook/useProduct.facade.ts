@@ -10,6 +10,7 @@ interface Product {
 
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [favorites, setFavorites] = useState<Product[]>([]); // Stato per i preferiti
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -21,8 +22,23 @@ export const useProducts = () => {
     }
   }, []);
 
+  const toggleFavorite = useCallback((product: Product) => {
+    setFavorites((prevFavorites) => {
+      const isFavorite = prevFavorites.find((item) => item.id === product.id);
+      if (isFavorite) {
+        // Rimuovi dai preferiti
+        return prevFavorites.filter((item) => item.id !== product.id);
+      } else {
+        // Aggiungi ai preferiti
+        return [...prevFavorites, product];
+      }
+    });
+  }, []);
+
   return {
     products,
+    favorites,
     fetchProducts,
+    toggleFavorite,
   };
 };

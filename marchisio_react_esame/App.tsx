@@ -1,9 +1,11 @@
-// App.tsx
 import React from "react";
-import HomeScreen from "./src/ui/screens/home/home.screen"; // Importa HomeScreen direttamente
+import { NavigationContainer } from "@react-navigation/native";
+import RootStack from "./src/ui/navigation/root.stack";
 
-const App = () => {
-  return <HomeScreen />;
-};
-
-export default App;
+export default function App() {
+  return (
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
+  );
+}

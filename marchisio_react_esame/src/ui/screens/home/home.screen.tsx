@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
-import { View, FlatList, StyleSheet, ActivityIndicator } from "react-native";
+import { View, FlatList, ActivityIndicator } from "react-native";
 import Product from "../../atoms/product/product.atom";
 import { useProducts } from "../hook/useProduct.facade";
+import styles from "./home.styles";
 
 const HomeScreen = () => {
-  const { products, fetchProducts } = useProducts(); // Usa il nuovo hook per ottenere i prodotti
+  const { products, favorites, fetchProducts, toggleFavorite } = useProducts();
 
-  // Carica i prodotti quando la schermata viene montata
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   return (
     <View style={styles.container}>
-      {/* Se i prodotti non sono ancora caricati, mostra un loader */}
       {products.length === 0 ? (
         <ActivityIndicator size="large" color="#6200ee" />
       ) : (
@@ -22,10 +21,13 @@ const HomeScreen = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Product
+              id={item.id}
               title={item.title}
               price={item.price}
               description={item.description}
               image={item.image}
+              isFavorite={favorites.some((fav) => fav.id === item.id)} // Controlla se è nei preferiti
+              onToggleFavorite={() => toggleFavorite(item)} // Gestisci il toggle
             />
           )}
         />
@@ -33,12 +35,5 @@ const HomeScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-});
 
 export default HomeScreen;

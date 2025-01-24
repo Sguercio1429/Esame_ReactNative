@@ -40,7 +40,6 @@ const DetailScreen = ({ navigation, route }: Props) => {
     [currentIndex, productId.length]
   );
 
-  // ** CALLBACKS ** //
   const handleBack = useCallback(() => {
     const previousId = productId[currentIndex - 1];
     if (!previousId) return;
@@ -53,12 +52,10 @@ const DetailScreen = ({ navigation, route }: Props) => {
     navigation.setParams({ id: nextId });
   }, [currentIndex, productId, navigation]);
 
-  // ** FETCH PRODUCT DETAILS ** //
   useEffect(() => {
     setIsLoading(true);
     setError(null);
 
-    // Correggere l'URL con la barra `/` prima dell'ID
     fetch(`https://fakestoreapi.com/products/${id}`)
       .then((res) => {
         if (!res.ok) {
@@ -76,7 +73,6 @@ const DetailScreen = ({ navigation, route }: Props) => {
       });
   }, [id]);
 
-  // ** UI RENDERING ** //
   if (isLoading) {
     return (
       <View style={styles.loader}>
@@ -105,7 +101,6 @@ const DetailScreen = ({ navigation, route }: Props) => {
 
   return (
     <View style={[styles.container, { marginTop: top, marginBottom: bottom }]}>
-      {/* Navigazione Indietro e Avanti */}
       <View style={styles.navigatorContainer}>
         <Ionicons
           name={"chevron-back-circle"}
@@ -121,19 +116,17 @@ const DetailScreen = ({ navigation, route }: Props) => {
         />
       </View>
 
-      {/* Dettagli Prodotto */}
       <Product
         id={product.id}
         title={product.title}
         price={product.price}
         description={product.description}
         image={product.image}
-        isFavorite={false} // Aggiorna questa logica secondo le tue necessità
+        isFavorite={false}
         onToggleFavorite={() => {}}
         onPressImage={() => {}}
       />
 
-      {/* Bottone per tornare indietro */}
       <Button title={"Torna indietro"} onPress={navigation.goBack} />
     </View>
   );

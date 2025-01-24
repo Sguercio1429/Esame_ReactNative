@@ -50,7 +50,6 @@ const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      {/* Filtro per categoria */}
       <View style={styles.categoryContainer}>
         {categories.map((category) => (
           <TouchableOpacity
@@ -77,7 +76,6 @@ const HomeScreen = ({ navigation }: Props) => {
         ))}
       </View>
 
-      {/* Filtro per rating */}
       <View style={styles.ratingContainer}>
         {ratingOrders.map((order) => (
           <TouchableOpacity
@@ -104,7 +102,6 @@ const HomeScreen = ({ navigation }: Props) => {
         ))}
       </View>
 
-      {/* Lista dei prodotti */}
       {products.length === 0 ? (
         <ActivityIndicator size="large" color="#6200ee" />
       ) : (
@@ -128,7 +125,7 @@ const HomeScreen = ({ navigation }: Props) => {
               }
             />
           )}
-          numColumns={4} // Visualizza un massimo di 4 prodotti per riga
+          numColumns={4}
         />
       )}
     </View>

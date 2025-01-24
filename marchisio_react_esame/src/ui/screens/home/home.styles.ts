@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flexDirection: "row",
-    flexWrap: "wrap", // Permette di andare a capo se non c'è abbastanza spazio
+    flexWrap: "wrap",
     marginBottom: 10,
   },
   categoryButton: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     flexDirection: "row",
-    flexWrap: "wrap", // Permette di andare a capo
+    flexWrap: "wrap",
     marginBottom: 10,
   },
   ratingButton: {

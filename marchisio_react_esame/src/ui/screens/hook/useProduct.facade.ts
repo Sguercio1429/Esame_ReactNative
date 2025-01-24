@@ -1,4 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
+import { PREFERRED_PRODUCTS } from "../../../core/storage/types";
+import { storage } from "../../../core/storage/storage";
 
 interface Product {
   id: number;
@@ -6,16 +8,17 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  category: string; // Aggiunto il campo per la categoria
+  category: string;
   rating: {
     rate: number;
     count: number;
-  }; // Per le recensioni
+  };
 }
 
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [favorites, setFavorites] = useState<Product[]>([]);
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [ratingOrder, setRatingOrder] = useState<"asc" | "desc" | null>(null);
 
@@ -29,18 +32,52 @@ export const useProducts = () => {
     }
   }, []);
 
-  const toggleFavorite = useCallback((product: Product) => {
-    setFavorites((prevFavorites) => {
-      const isFavorite = prevFavorites.find((item) => item.id === product.id);
-      if (isFavorite) {
-        return prevFavorites.filter((item) => item.id !== product.id);
-      } else {
-        return [...prevFavorites, product];
-      }
-    });
+  const loadFavorites = useCallback(async () => {
+    try {
+      const storedFavorites = await storage.getItem(PREFERRED_PRODUCTS);
+      const parsedFavorites = storedFavorites
+        ? JSON.parse(storedFavorites)
+        : [];
+      setFavoriteIds(parsedFavorites);
+    } catch (error) {
+      console.error("Error loading favorites:", error);
+    }
   }, []);
 
-  // Applica i filtri ai prodotti
+  const addFavorite = useCallback(
+    async (item: Product) => {
+      const updatedFavorites = favoriteIds.includes(item.id)
+        ? favoriteIds.filter((id) => id !== item.id)
+        : [...favoriteIds, item.id];
+
+      setFavoriteIds(updatedFavorites);
+      await storage.setItem(
+        PREFERRED_PRODUCTS,
+        JSON.stringify(updatedFavorites)
+      );
+    },
+    [favoriteIds]
+  );
+
+  const toggleFavorite = useCallback(
+    (product: Product) => {
+      const isFavorite = favoriteIds.includes(product.id);
+      const updatedFavoriteIds = isFavorite
+        ? favoriteIds.filter((id) => id !== product.id)
+        : [...favoriteIds, product.id];
+
+      setFavoriteIds(updatedFavoriteIds); // Aggiorna gli ID preferiti
+      setFavorites(
+        isFavorite
+          ? favorites.filter((item) => item.id !== product.id)
+          : [...favorites, product]
+      ); // Aggiorna i prodotti preferiti
+
+      storage.setItem(PREFERRED_PRODUCTS, JSON.stringify(updatedFavoriteIds)); // Persisti nello storage
+    },
+    [favoriteIds, favorites]
+  );
+
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
@@ -63,10 +100,13 @@ export const useProducts = () => {
 
   return {
     products: filteredProducts,
+    favoriteIds,
     favorites,
     fetchProducts,
     toggleFavorite,
+    addFavorite,
     setCategoryFilter,
     setRatingOrder,
+    loadFavorites,
   };
 };

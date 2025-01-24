@@ -22,8 +22,11 @@ const FavoritesScreen = () => {
               price={item.price}
               description={item.description}
               image={item.image}
-              isFavorite={true} // Sempre preferito nella schermata preferiti
-              onToggleFavorite={() => toggleFavorite(item)} // Permette di rimuovere dai preferiti
+              isFavorite={true}
+              onToggleFavorite={() => toggleFavorite(item)}
+              onPressImage={function (): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           )}
         />

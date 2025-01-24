@@ -26,7 +26,6 @@ const Product = ({
 }: ProductProps) => {
   return (
     <View style={styles.container}>
-      {/* Immagine cliccabile */}
       <TouchableOpacity onPress={onPressImage}>
         <Image source={{ uri: image }} style={styles.image} />
       </TouchableOpacity>
@@ -44,7 +43,6 @@ const Product = ({
         </TouchableOpacity>
       </View>
       <Text style={styles.price}>${price.toFixed(2)}</Text>
-      {/* Descrizione con limite di 2 righe */}
       <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
         {description}
       </Text>
